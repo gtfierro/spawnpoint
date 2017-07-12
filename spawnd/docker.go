@@ -152,6 +152,13 @@ func RestartContainer(alias string, cfg *Manifest, bwRouter string, rebuildImg b
 		return nil, err
 	}
 
+	// TODO: now make systemd unit file
+	err = MakeSystemD(imgname, cnt)
+	if err != nil {
+		fmt.Println("Failed to make systemd file for", cfg.ServiceName)
+		return nil, err
+	}
+
 	err = dkr.StartContainer(cnt.ID, nil)
 	if err != nil {
 		fmt.Println("Failed to start container for svc", cfg.ServiceName)
